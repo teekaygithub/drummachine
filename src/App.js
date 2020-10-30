@@ -116,6 +116,50 @@ const bankTwo = [
   }
 ];
 
+class PadKey extends React.Component {
+    constructor(props) {
+        super(props);
+        this.playSound = this.playSound.bind(this);
+    }
+    
+    playSound() {
+        const sound = document.getElementById(this.props.keyId);
+        sound.play();
+    }
+    
+    render() {
+        return (
+            <div 
+              id="drum-pad"
+              onClick={this.playSound}>
+                {this.props.keyLabel}
+                <audio id={this.props.keyId}>
+                    <source src={this.props.soundLink} />
+                </audio>
+            </div>
+        );
+    }
+}
+
+class DrumPad extends React.Component {
+    constructor(props) {
+        super(props);
+    }
+    
+    render() {
+        const soundBank = this.props.soundBank;
+        const drumPads = soundBank.map((elem)=>
+            <PadKey keyId={elem.id} keyLabel={elem.keyTrigger} soundLink={elem.url} />
+        );
+        return (
+            <div id="grid-container">
+            {drumPads}
+            </div>
+        );
+    }
+}
+
+
 class App extends React.Component {
   constructor(props) {
     super(props);
@@ -126,14 +170,7 @@ class App extends React.Component {
   render () {
     return (
       <div id="drum-machine">
-        <div id="grid-container">
-          <div id="drum-pad">wat</div>
-          <div id="drum-pad">wat</div>
-          <div id="drum-pad">wat</div>
-          <div id="drum-pad">wat</div>
-          <div id="drum-pad">wat</div>
-          <div id="drum-pad">wat</div>
-        </div>
+        <DrumPad soundBank={bankOne} />
         <div id="control-container"></div>
       </div>
     );
